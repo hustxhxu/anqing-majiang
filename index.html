@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
-<title>安庆麻将练牌器 v189</title>
+<title>安庆麻将练牌器 v190</title>
 <style>
   :root{
     --bg:#f5f7fb;--card:#fff;--text:#111827;--muted:#6b7280;--blue:#2563eb;--blue2:#dbeafe;
@@ -4309,6 +4309,81 @@
     display:none!important;
   }
 
+
+  /* v190：非手牌区用两行小标签区分宝/杠与数量：上行状态，下行数量 */
+  .meld-pill.opened{
+    display:inline-flex!important;
+    align-items:center!important;
+    gap:4px!important;
+    min-height:38px!important;
+    padding:3px 6px!important;
+    overflow:visible!important;
+  }
+  .meld-mini-meta{
+    box-sizing:border-box!important;
+    display:inline-flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:center!important;
+    min-width:22px!important;
+    max-width:38px!important;
+    height:30px!important;
+    padding:1px 3px!important;
+    border-radius:8px!important;
+    line-height:1!important;
+    white-space:nowrap!important;
+    flex:0 0 auto!important;
+  }
+  .meld-mini-meta.bao{
+    background:#ffedd5!important;
+    border:1px solid #fdba74!important;
+    color:#9a3412!important;
+  }
+  .meld-mini-meta.gang{
+    background:#dcfce7!important;
+    border:1px solid #86efac!important;
+    color:#166534!important;
+  }
+  .meld-mini-meta b{
+    display:block!important;
+    font-size:10px!important;
+    line-height:12px!important;
+    font-weight:900!important;
+    margin:0!important;
+    padding:0!important;
+  }
+  .meld-mini-meta em{
+    display:block!important;
+    font-size:9px!important;
+    line-height:11px!important;
+    font-style:normal!important;
+    font-weight:900!important;
+    margin:0!important;
+    padding:0!important;
+    color:inherit!important;
+  }
+  .meld-pill-text,
+  .meld-status-dot{
+    display:none!important;
+  }
+  .meld-status-tile,
+  .meld-pill-tile,
+  .meld-status-tile .tile,
+  .meld-status-tile .tile.small,
+  .meld-pill-tile .tile,
+  .meld-pill-tile .tile.small{
+    width:24px!important;
+    min-width:24px!important;
+    height:32px!important;
+    min-height:32px!important;
+    flex:0 0 24px!important;
+    margin:0!important;
+    transform:none!important;
+  }
+  .practice-open-meld .meld-mini-meta{
+    margin-right:2px!important;
+  }
+
 </style>
 </head>
 <body>
@@ -4436,7 +4511,7 @@
     </div>
     <div id="result" class="result neutral merged-result" style="display:none"></div>
   </div>
-  <div class="footer">v189：彻底去掉手牌摸/杠字样，非手牌区去掉宝/杠文字侧标。</div>
+  <div class="footer">v190：非手牌区状态改为两行小标签，区分宝/杠和数量。</div>
 </div>
 
 
@@ -5025,9 +5100,10 @@ function renderOpenMelds(){
     div.type='button';
     div.className='meld-pill opened '+(isBao?'bao-opened':'');
     div.title=openMeldGroupLabel(g);
+    const countText = isBao ? `×${g.count}` : `×4${g.count>1?' · '+g.count+'组':''}`;
     div.innerHTML = isBao
-      ? `<span class="meld-pill-tile meld-status-tile status-bao">${tileHTML(tile)}</span><span class="meld-pill-text">×${g.count}</span>`
-      : `<span class="meld-pill-tile meld-status-tile status-gang">${tileHTML(tile)}</span><span class="meld-pill-text">×4${g.count>1?' · '+g.count+'组':''}</span>`;
+      ? `<span class="meld-pill-tile meld-status-tile status-bao">${tileHTML(tile)}</span><span class="meld-mini-meta bao"><b>宝</b><em>${countText}</em></span>`
+      : `<span class="meld-pill-tile meld-status-tile status-gang">${tileHTML(tile)}</span><span class="meld-mini-meta gang"><b>杠</b><em>${countText}</em></span>`;
     box.appendChild(div);
   });
 }
@@ -6031,8 +6107,8 @@ function openMeldSnapshotHtml(){
   if(!opens.length) return '';
   const rows = groupedOpenMelds().map(g=>{
     const tile = g.tile || '';
-    if(g.type==='baoGang') return `<div class="practice-open-meld bao-opened"><span class="meld-status-tile status-bao">${tileHTML(tile)}</span><b>×${g.count}</b><em>不计入14张</em></div>`;
-    return `<div class="practice-open-meld"><span class="meld-status-tile status-gang">${tileHTML(tile)}</span><b>×4${g.count>1?' · '+g.count+'组':''}</b><em>算${g.count*3}张</em></div>`;
+    if(g.type==='baoGang') return `<div class="practice-open-meld bao-opened"><span class="meld-status-tile status-bao">${tileHTML(tile)}</span><span class="meld-mini-meta bao"><b>宝</b><em>×${g.count}</em></span><em>不计入14张</em></div>`;
+    return `<div class="practice-open-meld"><span class="meld-status-tile status-gang">${tileHTML(tile)}</span><span class="meld-mini-meta gang"><b>杠</b><em>×4${g.count>1?' · '+g.count+'组':''}</em></span><em>算${g.count*3}张</em></div>`;
   }).join('');
   const eff = openMeldEffectiveCount();
   const title = eff ? `非手牌区 <b>${nonHandGroupCount()}次，${groupedOpenMelds().length}类，结构计${eff}张</b>` : `非手牌区 <b>${nonHandGroupCount()}次，${groupedOpenMelds().length}类，不计入14张</b>`;
@@ -7810,9 +7886,9 @@ function closeMomFeedbackModal(){
 
 <!-- v132: advice button always returns a modal result, never inline-only feedback -->
 
-<!-- v189: remove hand draw/gang labels at render level -->
+<!-- v190: two-line status/count meta for opened melds -->
 
-<!-- v189: remove non-hand bao/gang text side badges -->
+<!-- v190: compact non-hand labels distinguish bao/gang without covering tiles -->
 
 <!-- v135: records modal preserves challenge-success return context -->
 
@@ -7923,4 +7999,6 @@ function closeMomFeedbackModal(){
 <!-- v188: 手牌区最新摸到的牌统一橙色高亮，不再显示“摸”或“杠”角标，避免误以为需要区分来源 -->
 
 <!-- v189: 渲染层不再给手牌最新牌添加 drawn/gang 来源类，而是统一 latest-tile；非手牌区也去掉宝/杠文字侧标，只用色彩区分 -->
+
+<!-- v190: 非手牌区宝杠/普通杠改成牌旁两行小标签：上行宝/杠，下行数量，不遮挡牌面且不额外占高 -->
 </html>
