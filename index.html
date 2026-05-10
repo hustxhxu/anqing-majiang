@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
-<title>安庆麻将练牌器 v190</title>
+<title>安庆麻将练牌器 v191</title>
 <style>
   :root{
     --bg:#f5f7fb;--card:#fff;--text:#111827;--muted:#6b7280;--blue:#2563eb;--blue2:#dbeafe;
@@ -4384,6 +4384,95 @@
     margin-right:2px!important;
   }
 
+
+  /* v191：对局浮动手牌区吸底。牌在底部，手机出牌更顺手；页面底部预留空间避免遮挡内容。 */
+  body{
+    padding-top:14px!important;
+    padding-bottom:var(--floating-board-bottom-space, 230px)!important;
+  }
+  .floating-board-console{
+    top:auto!important;
+    bottom:0!important;
+    left:50%!important;
+    transform:translateX(-50%)!important;
+    width:min(560px, 100vw)!important;
+    border-top:1px solid #dbeafe!important;
+    border-bottom:0!important;
+    border-radius:18px 18px 0 0!important;
+    box-shadow:0 -10px 28px rgba(15,23,42,.18)!important;
+    padding:8px 12px calc(10px + env(safe-area-inset-bottom, 0px))!important;
+    display:flex!important;
+    flex-direction:column!important;
+    gap:5px!important;
+  }
+  .floating-board-head{ order:1!important; margin-bottom:0!important; }
+  .floating-meld-zone{ order:2!important; margin-top:0!important; }
+  .floating-meta-row{ order:3!important; margin-top:0!important; }
+  .floating-hint{ order:4!important; margin-top:0!important; }
+  .floating-challenge-actions{ order:5!important; margin-top:0!important; }
+  .floating-gang-prompt{ order:6!important; }
+  .floating-hand{
+    order:7!important;
+    margin-top:2px!important;
+    border:2px solid #bfdbfe!important;
+    background:#f8fbff!important;
+    min-height:44px!important;
+    max-height:92px!important;
+    box-shadow:inset 0 0 0 1px rgba(37,99,235,.06)!important;
+  }
+  .compact-floating-board .floating-hand{
+    flex-wrap:nowrap!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    min-height:44px!important;
+    max-height:48px!important;
+    padding:5px!important;
+    gap:4px!important;
+    align-items:center!important;
+    align-content:center!important;
+  }
+  .compact-floating-board .floating-hand .tile.small{
+    width:30px!important;
+    height:40px!important;
+  }
+  .floating-board-head::after{
+    content:'手牌吸底';
+    flex:0 0 auto;
+    margin-left:auto;
+    margin-right:6px;
+    padding:2px 7px;
+    border-radius:999px;
+    background:#eff6ff;
+    color:#2563eb;
+    font-size:11px;
+    font-weight:900;
+  }
+  @media(max-width:520px){
+    body{
+      padding-top:10px!important;
+      padding-bottom:var(--floating-board-bottom-space, 244px)!important;
+    }
+    .floating-board-console{
+      width:100vw!important;
+      padding:7px 10px calc(9px + env(safe-area-inset-bottom, 0px))!important;
+      border-radius:16px 16px 0 0!important;
+    }
+    .floating-board-head{
+      font-size:12px!important;
+    }
+    .floating-board-head::after{
+      display:none!important;
+    }
+    .compact-floating-board .floating-hand{
+      min-height:46px!important;
+      max-height:50px!important;
+    }
+    .compact-floating-board .floating-hand .tile.small{
+      width:29px!important;
+      height:39px!important;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -4511,7 +4600,7 @@
     </div>
     <div id="result" class="result neutral merged-result" style="display:none"></div>
   </div>
-  <div class="footer">v190：非手牌区状态改为两行小标签，区分宝/杠和数量。</div>
+  <div class="footer">v191：对局手牌区改为吸底，手机出牌更顺手。</div>
 </div>
 
 
@@ -5425,7 +5514,9 @@ function syncFloatingBoard(){
   }
 
   const h=Math.ceil(board.getBoundingClientRect().height||0);
-  document.documentElement.style.setProperty('--floating-board-space', (h+8)+'px');
+  // v191：悬测牌面条改为吸底，页面需要预留底部空间，不再预留顶部空间。
+  document.documentElement.style.setProperty('--floating-board-space', '0px');
+  document.documentElement.style.setProperty('--floating-board-bottom-space', (h+14)+'px');
 
   } catch(e){
     console.error('syncFloatingBoard failed', e);
@@ -7886,9 +7977,9 @@ function closeMomFeedbackModal(){
 
 <!-- v132: advice button always returns a modal result, never inline-only feedback -->
 
-<!-- v190: two-line status/count meta for opened melds -->
+<!-- v191: bottom-sticky hand console for mobile play -->
 
-<!-- v190: compact non-hand labels distinguish bao/gang without covering tiles -->
+<!-- v191: reserve bottom space and keep hand at bottom of floating console -->
 
 <!-- v135: records modal preserves challenge-success return context -->
 
@@ -8001,4 +8092,6 @@ function closeMomFeedbackModal(){
 <!-- v189: 渲染层不再给手牌最新牌添加 drawn/gang 来源类，而是统一 latest-tile；非手牌区也去掉宝/杠文字侧标，只用色彩区分 -->
 
 <!-- v190: 非手牌区宝杠/普通杠改成牌旁两行小标签：上行宝/杠，下行数量，不遮挡牌面且不额外占高 -->
+
+<!-- v191: 对局浮动手牌区从吸顶改为吸底，手牌行放到底部，页面预留底部空间避免遮挡 -->
 </html>
