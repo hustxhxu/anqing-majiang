@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
-<title>安庆麻将练牌器 v177</title>
+<title>安庆麻将练牌器 v189</title>
 <style>
   :root{
     --bg:#f5f7fb;--card:#fff;--text:#111827;--muted:#6b7280;--blue:#2563eb;--blue2:#dbeafe;
@@ -3744,6 +3744,571 @@
     margin:0 2px!important;
   }
 
+
+  /* v178：固定顶部手牌区也显示可杠高亮/角标 */
+  .compact-floating-hand .tile.gang-candidate-tile{
+    border-color:#2563eb!important;
+    box-shadow:0 0 0 2px rgba(37,99,235,.35), 0 3px 8px rgba(37,99,235,.18)!important;
+  }
+  .compact-floating-hand .tile.gang-candidate-tile::after{
+    right:-4px!important;
+    top:-6px!important;
+    min-width:16px!important;
+    height:16px!important;
+    font-size:10px!important;
+    line-height:16px!important;
+  }
+
+
+  /* v179：可杠角标从牌面内部上移到手牌框上方，不再被裁切 */
+  .floating-hand,
+  .compact-floating-hand{
+    overflow:visible!important;
+    padding-top:16px!important;
+    margin-top:4px!important;
+  }
+  .hand{
+    overflow:visible!important;
+    padding-top:16px!important;
+  }
+  .tile.gang-candidate-tile{
+    overflow:visible!important;
+    z-index:4!important;
+  }
+  .tile.gang-candidate-tile::after{
+    top:-17px!important;
+    right:50%!important;
+    transform:translateX(50%)!important;
+    min-width:18px!important;
+    height:17px!important;
+    padding:0 4px!important;
+    font-size:10px!important;
+    line-height:17px!important;
+    border-radius:999px!important;
+    z-index:20!important;
+  }
+  .compact-floating-hand .tile.gang-candidate-tile::after{
+    top:-16px!important;
+    right:50%!important;
+    transform:translateX(50%)!important;
+    min-width:17px!important;
+    height:16px!important;
+    font-size:9px!important;
+    line-height:16px!important;
+  }
+  .floating-board-console{
+    overflow:visible!important;
+  }
+
+
+  /* v180：四张可杠牌整体框选，只在框上方显示一个“杠”标记 */
+  .tile.gang-candidate-tile::after,
+  .compact-floating-hand .tile.gang-candidate-tile::after,
+  .gang-candidate-group .tile.gang-candidate-tile::after{
+    content:none!important;
+    display:none!important;
+  }
+  .gang-candidate-group{
+    position:relative!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    gap:3px!important;
+    padding:3px 4px 4px!important;
+    margin:13px 1px 2px!important;
+    border:2px solid #2563eb!important;
+    border-radius:11px!important;
+    background:rgba(239,246,255,.70)!important;
+    box-shadow:0 2px 8px rgba(37,99,235,.12)!important;
+    overflow:visible!important;
+  }
+  .gang-candidate-group.small{
+    gap:2px!important;
+    padding:2px 3px 3px!important;
+    margin:12px 0 1px!important;
+    border-radius:9px!important;
+  }
+  .gang-candidate-group .tile.gang-candidate-tile{
+    box-shadow:none!important;
+    border-color:#bfdbfe!important;
+    z-index:1!important;
+  }
+  .gang-group-badge{
+    position:absolute!important;
+    left:50%!important;
+    top:-17px!important;
+    transform:translateX(-50%)!important;
+    min-width:24px!important;
+    height:17px!important;
+    padding:0 7px!important;
+    border-radius:999px!important;
+    background:#2563eb!important;
+    color:#fff!important;
+    border:1px solid rgba(255,255,255,.95)!important;
+    box-shadow:0 2px 8px rgba(37,99,235,.25)!important;
+    font-size:11px!important;
+    line-height:17px!important;
+    font-weight:900!important;
+    text-align:center!important;
+    z-index:30!important;
+    pointer-events:none!important;
+  }
+  .gang-candidate-group.small .gang-group-badge{
+    top:-16px!important;
+    min-width:21px!important;
+    height:16px!important;
+    padding:0 6px!important;
+    font-size:10px!important;
+    line-height:16px!important;
+  }
+  .floating-hand,
+  .compact-floating-hand,
+  .hand{
+    overflow:visible!important;
+  }
+
+
+  /* v181：可杠提示改成牌组右侧按钮，不再放在上方，避免被手牌框遮住 */
+  .gang-candidate-group{
+    margin:2px 2px 2px!important;
+    padding:2px 3px!important;
+    gap:2px!important;
+    align-items:center!important;
+    border-color:#2563eb!important;
+    background:rgba(239,246,255,.78)!important;
+    overflow:visible!important;
+  }
+  .gang-candidate-group.small{
+    margin:1px 1px!important;
+    padding:1px 2px!important;
+    gap:1px!important;
+  }
+  .gang-group-badge{
+    display:none!important;
+  }
+  .gang-group-action{
+    flex:0 0 auto!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    min-width:24px!important;
+    height:28px!important;
+    margin-left:3px!important;
+    padding:0 6px!important;
+    border-radius:999px!important;
+    border:1px solid #93c5fd!important;
+    background:#2563eb!important;
+    color:#fff!important;
+    font-size:12px!important;
+    font-weight:900!important;
+    line-height:1!important;
+    cursor:pointer!important;
+    box-shadow:0 2px 7px rgba(37,99,235,.18)!important;
+  }
+  .gang-candidate-group.small .gang-group-action{
+    min-width:22px!important;
+    height:24px!important;
+    margin-left:2px!important;
+    padding:0 5px!important;
+    font-size:11px!important;
+  }
+  .gang-group-action:active{
+    transform:scale(.96)!important;
+  }
+  .floating-hand,
+  .compact-floating-hand,
+  .hand{
+    padding-top:4px!important;
+    overflow:visible!important;
+  }
+
+
+  /* v182：胡牌拆解支持多种胡法，且不再出现“其余面子”这种占位文案 */
+  .win-option-block{
+    margin:8px 0;
+    padding:8px;
+    border-radius:12px;
+    border:1px solid #bbf7d0;
+    background:#f0fdf4;
+  }
+  .win-option-title{
+    font-weight:900;
+    color:#166534;
+    margin-bottom:4px;
+  }
+  .win-option-structure{
+    font-weight:800;
+    color:#14532d;
+    margin-bottom:6px;
+  }
+
+
+  /* v183：可杠只在手牌区提示；四张牌边框更醒目，右侧“杠”按钮更像主操作 */
+  #floatingGangPrompt,
+  #handGangPrompt{
+    display:none!important;
+  }
+  .gang-candidate-group{
+    border:3px solid #f97316!important;
+    background:#fff7ed!important;
+    box-shadow:0 0 0 3px rgba(249,115,22,.16), 0 4px 12px rgba(249,115,22,.18)!important;
+    border-radius:12px!important;
+    padding:3px 4px!important;
+  }
+  .gang-candidate-group.small{
+    border-width:3px!important;
+    border-radius:10px!important;
+    padding:2px 3px!important;
+  }
+  .gang-candidate-group .tile.gang-candidate-tile{
+    border-color:#fed7aa!important;
+    background:#fff!important;
+  }
+  .gang-group-action{
+    min-width:30px!important;
+    height:34px!important;
+    margin-left:5px!important;
+    border:1px solid #fb923c!important;
+    background:#f97316!important;
+    color:#fff!important;
+    font-size:14px!important;
+    font-weight:900!important;
+    box-shadow:0 3px 10px rgba(249,115,22,.25)!important;
+  }
+  .gang-candidate-group.small .gang-group-action{
+    min-width:28px!important;
+    height:30px!important;
+    margin-left:4px!important;
+    font-size:13px!important;
+  }
+  .gang-group-action::after{
+    content:'';
+  }
+  .meld-pill.candidate{
+    display:none!important;
+  }
+
+
+  /* v184：可杠牌组边框不能贴着手牌区边缘；给手牌容器留内边距，避免上下边框被裁切 */
+  .hand,
+  .floating-hand,
+  .compact-floating-hand{
+    box-sizing:border-box!important;
+    overflow:visible!important;
+  }
+  .hand{
+    padding:8px 10px!important;
+    align-items:center!important;
+  }
+  .floating-hand,
+  .compact-floating-hand{
+    padding:9px 10px 8px!important;
+    align-items:center!important;
+  }
+  .board-console .hand,
+  .floating-board-console .floating-hand{
+    min-height:56px!important;
+  }
+  .gang-candidate-group{
+    box-sizing:border-box!important;
+    margin:2px 5px!important;
+    padding:3px 5px!important;
+    outline:2px solid rgba(249,115,22,.20)!important;
+    outline-offset:1px!important;
+    border:2px solid #f97316!important;
+    border-radius:12px!important;
+  }
+  .gang-candidate-group.small{
+    margin:2px 4px!important;
+    padding:2px 4px!important;
+    outline-width:2px!important;
+    border-width:2px!important;
+    border-radius:10px!important;
+  }
+  .gang-candidate-group .tile{
+    flex:0 0 auto!important;
+  }
+  .gang-group-action{
+    flex:0 0 auto!important;
+  }
+
+
+  /* v185：非手牌区不再用“已杠”大标签；宝/杠都贴到牌面右上角，并避免被裁切 */
+  .floating-meld-zone,
+  .floating-meld-body,
+  .floating-melds-open,
+  .meld-pill,
+  .meld-pill-tile,
+  .practice-open-meld{
+    overflow:visible!important;
+  }
+  .meld-pill.opened{
+    padding:3px 7px!important;
+    gap:5px!important;
+  }
+  .meld-pill.opened .meld-pill-tag{
+    display:none!important;
+  }
+  .bao-marked-tile,
+  .gang-marked-tile{
+    position:relative!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    overflow:visible!important;
+  }
+  .bao-marked-tile > i,
+  .gang-marked-tile > i{
+    position:absolute!important;
+    right:1px!important;
+    top:1px!important;
+    min-width:13px!important;
+    height:13px!important;
+    padding:0 2px!important;
+    border-radius:999px!important;
+    color:#fff!important;
+    border:1px solid rgba(255,255,255,.96)!important;
+    box-shadow:0 1px 3px rgba(15,23,42,.18)!important;
+    font-style:normal!important;
+    font-size:8px!important;
+    line-height:12px!important;
+    font-weight:900!important;
+    text-align:center!important;
+    z-index:8!important;
+    pointer-events:none!important;
+  }
+  .bao-marked-tile > i{
+    background:#f97316!important;
+  }
+  .gang-marked-tile > i{
+    background:#16a34a!important;
+  }
+  .meld-pill.bao-opened .meld-pill-text{
+    color:#9a3412!important;
+  }
+  .meld-pill.opened:not(.bao-opened) .meld-pill-text{
+    color:#166534!important;
+  }
+  .practice-open-meld .gang-mini-label{
+    background:#16a34a!important;
+    color:#fff!important;
+    border-radius:999px!important;
+    padding:2px 7px!important;
+    font-size:12px!important;
+    font-weight:900!important;
+  }
+  .practice-open-meld.bao-opened .bao-marked-tile > i,
+  .practice-open-meld .gang-marked-tile > i{
+    right:0!important;
+    top:0!important;
+  }
+
+
+  /* v186：非手牌区牌面状态角标统一缩小并下移到牌角，避免遮挡牌面主体；宝/杠同尺寸 */
+  .bao-marked-tile > i,
+  .gang-marked-tile > i{
+    right:0!important;
+    top:auto!important;
+    bottom:0!important;
+    min-width:10px!important;
+    width:10px!important;
+    height:10px!important;
+    padding:0!important;
+    border-radius:999px!important;
+    font-size:7px!important;
+    line-height:9px!important;
+    border:1px solid rgba(255,255,255,.95)!important;
+    box-shadow:0 1px 2px rgba(15,23,42,.16)!important;
+    transform:none!important;
+    opacity:.96!important;
+  }
+  .meld-pill .tile.small,
+  .meld-pill-tile .tile.small{
+    width:24px!important;
+    height:32px!important;
+  }
+  .practice-open-meld .bao-marked-tile > i,
+  .practice-open-meld .gang-marked-tile > i{
+    right:0!important;
+    top:auto!important;
+    bottom:0!important;
+    min-width:10px!important;
+    width:10px!important;
+    height:10px!important;
+    font-size:7px!important;
+    line-height:9px!important;
+  }
+
+
+  /* v187：非手牌区普通杠/宝牌杠统一尺寸；状态不再盖在牌面上，而是牌旁小侧标 */
+  .floating-melds-open{
+    align-items:center!important;
+    gap:6px!important;
+  }
+  .meld-pill.opened{
+    box-sizing:border-box!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    gap:4px!important;
+    min-height:38px!important;
+    padding:3px 7px!important;
+    overflow:visible!important;
+  }
+  .meld-status-tile,
+  .meld-pill-tile,
+  .meld-pill .meld-pill-tile,
+  .practice-open-meld .meld-status-tile{
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    width:24px!important;
+    min-width:24px!important;
+    height:32px!important;
+    min-height:32px!important;
+    overflow:visible!important;
+    position:relative!important;
+    flex:0 0 24px!important;
+  }
+  .meld-status-tile .tile,
+  .meld-status-tile .tile.small,
+  .meld-pill-tile .tile,
+  .meld-pill-tile .tile.small{
+    width:24px!important;
+    min-width:24px!important;
+    height:32px!important;
+    min-height:32px!important;
+    margin:0!important;
+    transform:none!important;
+  }
+  .bao-marked-tile > i,
+  .gang-marked-tile > i,
+  .meld-status-tile > i{
+    display:none!important;
+    content:none!important;
+  }
+  .meld-status-dot{
+    box-sizing:border-box!important;
+    flex:0 0 auto!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    width:15px!important;
+    height:15px!important;
+    min-width:15px!important;
+    border-radius:999px!important;
+    color:#fff!important;
+    border:1px solid rgba(255,255,255,.96)!important;
+    box-shadow:0 1px 2px rgba(15,23,42,.15)!important;
+    font-size:8px!important;
+    line-height:13px!important;
+    font-weight:900!important;
+    font-style:normal!important;
+    padding:0!important;
+    margin-left:-2px!important;
+    pointer-events:none!important;
+  }
+  .meld-status-dot.bao{ background:#f97316!important; }
+  .meld-status-dot.gang{ background:#16a34a!important; }
+  .meld-pill.bao-opened .meld-pill-text,
+  .meld-pill.opened:not(.bao-opened) .meld-pill-text{
+    font-size:12px!important;
+    font-weight:900!important;
+  }
+  .meld-pill.bao-opened .meld-pill-text{ color:#9a3412!important; }
+  .meld-pill.opened:not(.bao-opened) .meld-pill-text{ color:#166534!important; }
+  .practice-open-meld .meld-status-dot{
+    margin-left:0!important;
+    margin-right:2px!important;
+  }
+
+
+  /* v188：手牌区只表达“这是新摸上来的牌”，不再区分“摸/杠”来源 */
+  .tile.drawn,
+  .tile.gang{
+    outline:3px solid #f97316!important;
+    box-shadow:0 0 0 3px rgba(249,115,22,.18),0 2px 5px rgba(0,0,0,.16)!important;
+  }
+  .tile.drawn::after,
+  .tile.gang::after{
+    content:none!important;
+    display:none!important;
+  }
+  .compact-floating-hand .tile.drawn,
+  .compact-floating-hand .tile.gang,
+  .floating-hand .tile.drawn,
+  .floating-hand .tile.gang{
+    outline:3px solid #f97316!important;
+    box-shadow:0 0 0 3px rgba(249,115,22,.18),0 2px 5px rgba(0,0,0,.16)!important;
+  }
+
+
+  /* v189：彻底去掉手牌区“摸/杠”字样，只保留最新牌高亮 */
+  .tile.latest-tile{
+    outline:3px solid #f97316!important;
+    box-shadow:0 0 0 3px rgba(249,115,22,.18),0 2px 5px rgba(0,0,0,.16)!important;
+  }
+  .hand .tile.drawn::after,
+  .hand .tile.gang::after,
+  .floating-hand .tile.drawn::after,
+  .floating-hand .tile.gang::after,
+  .compact-floating-hand .tile.drawn::after,
+  .compact-floating-hand .tile.gang::after,
+  .hand .tile.latest-tile::after,
+  .floating-hand .tile.latest-tile::after,
+  .compact-floating-hand .tile.latest-tile::after{
+    content:none!important;
+    display:none!important;
+  }
+  .hand .tile.gang,
+  .floating-hand .tile.gang,
+  .compact-floating-hand .tile.gang,
+  .hand .tile.drawn,
+  .floating-hand .tile.drawn,
+  .compact-floating-hand .tile.drawn{
+    outline:3px solid #f97316!important;
+    box-shadow:0 0 0 3px rgba(249,115,22,.18),0 2px 5px rgba(0,0,0,.16)!important;
+  }
+
+  /* v189：非手牌区不再显示“宝/杠”文字侧标；用底色/边框区分，牌面保持同尺寸 */
+  .meld-status-dot{
+    display:none!important;
+  }
+  .meld-pill.opened{
+    min-height:38px!important;
+    padding:3px 7px!important;
+    gap:5px!important;
+  }
+  .meld-pill.opened.bao-opened{
+    border-color:#fdba74!important;
+    background:#fff7ed!important;
+  }
+  .meld-pill.opened:not(.bao-opened){
+    border-color:#86efac!important;
+    background:#f0fdf4!important;
+  }
+  .meld-status-tile,
+  .meld-pill-tile,
+  .meld-status-tile .tile,
+  .meld-status-tile .tile.small,
+  .meld-pill-tile .tile,
+  .meld-pill-tile .tile.small{
+    width:24px!important;
+    min-width:24px!important;
+    height:32px!important;
+    min-height:32px!important;
+    flex:0 0 24px!important;
+    margin:0!important;
+    transform:none!important;
+  }
+  .meld-status-tile > i,
+  .bao-marked-tile > i,
+  .gang-marked-tile > i{
+    display:none!important;
+    content:none!important;
+  }
+  .practice-open-meld .meld-status-dot{
+    display:none!important;
+  }
+
 </style>
 </head>
 <body>
@@ -3871,7 +4436,7 @@
     </div>
     <div id="result" class="result neutral merged-result" style="display:none"></div>
   </div>
-  <div class="footer">v177：非手牌区宝牌杠改为牌面角标。</div>
+  <div class="footer">v189：彻底去掉手牌摸/杠字样，非手牌区去掉宝/杠文字侧标。</div>
 </div>
 
 
@@ -4403,17 +4968,19 @@ function naturalGangCandidates(){
   return arr;
 }
 function shouldShowGangHandPrompt(){
-  return naturalGangCandidates().length>0 && hand.length===targetTurnHandSize();
+  // v186：只要手牌区真实存在四张相同非宝牌，就提示可杠；不再被 13/14、已副露等有效张数状态挡住。
+  // 是否真的点击杠，仍由用户选择；点手牌仍按出牌处理。
+  return naturalGangCandidates().length>0;
 }
 function isGangCandidateTile(t){
   return shouldShowGangHandPrompt() && isNaturalGangTile(t) && countInHand(t)===4;
 }
 function gangCandidatePromptHtml(compact=false){
   const cands=naturalGangCandidates();
-  if(!cands.length || hand.length!==targetTurnHandSize()) return '';
+  if(!cands.length) return '';
   const chips=cands.map(t=>`<button type="button" class="hand-gang-chip" onclick="event.stopPropagation(); handleGangPromptClick('${t}')">${tileHTML(t)}<span>杠</span></button>`).join('');
   return `<div class="hand-gang-prompt-inner">
-    <div class="hand-gang-copy">${compact?'有四张同牌可杠':'手牌里有四张同牌，可点右侧“杠”；不想杠也可以直接点手牌出牌。'}</div>
+    <div class="hand-gang-copy">${compact?'有四张同牌可杠':'手牌里有四张同牌，可点牌组右侧“杠”；不想杠也可以直接点手牌出牌。'}</div>
     <div class="hand-gang-actions">${chips}</div>
   </div>`;
 }
@@ -4426,32 +4993,24 @@ function handleGangPromptClick(tile){
   gangNaturalTile(tile);
 }
 function renderGangHandPrompt(){
-  const html = shouldShowGangHandPrompt() ? gangCandidatePromptHtml(false) : '';
+  // v183：可杠提示只保留在手牌区牌组本身；不再显示中间提示条，减少重复信息。
   const main=document.getElementById('handGangPrompt');
-  if(main){
-    main.style.display = html ? 'block' : 'none';
-    main.innerHTML = html;
-  }
+  if(main){ main.style.display='none'; main.innerHTML=''; }
   const floating=document.getElementById('floatingGangPrompt');
-  if(floating){
-    const fhtml = shouldShowGangHandPrompt() ? gangCandidatePromptHtml(true) : '';
-    floating.style.display = fhtml ? 'block' : 'none';
-    floating.innerHTML = fhtml;
-  }
+  if(floating){ floating.style.display='none'; floating.innerHTML=''; }
 }
 function renderOpenMelds(){
   const opens=Array.isArray(openMelds)?openMelds:[];
-  const cands=naturalGangCandidates();
 
   const zone=document.getElementById('floatingMeldZone');
   const box=document.getElementById('floatingMeldsOpen');
   const cnt=document.getElementById('floatingMeldCnt');
   if(!zone || !box) return;
 
-  const has = !!(opens.length || cands.length);
+  const has = !!opens.length;
   zone.classList.toggle('has-content', has);
   zone.style.display = has ? 'block' : 'none';
-  if(cnt) cnt.textContent = opens.length ? `非手牌${opens.length}次 / ${groupedOpenMelds().length}类` : (cands.length ? `${cands.length}个可杠` : '0组');
+  if(cnt) cnt.textContent = opens.length ? `非手牌${opens.length}次 / ${groupedOpenMelds().length}类` : '0组';
 
   box.innerHTML='';
   if(!has){
@@ -4467,17 +5026,8 @@ function renderOpenMelds(){
     div.className='meld-pill opened '+(isBao?'bao-opened':'');
     div.title=openMeldGroupLabel(g);
     div.innerHTML = isBao
-      ? `<span class="meld-pill-tile bao-marked-tile">${tileHTML(tile)}<i>宝</i></span><span class="meld-pill-text">×${g.count}</span>`
-      : `<span class="meld-pill-tag">已杠</span><span class="meld-pill-tile">${tileHTML(tile)}</span><span class="meld-pill-text">×4${g.count>1?' · '+g.count+'组':''}</span>`;
-    box.appendChild(div);
-  });
-
-  cands.forEach(t=>{
-    const div=document.createElement('button');
-    div.type='button';
-    div.className='meld-pill candidate';
-    div.innerHTML=`<span class="meld-pill-tag">可杠</span><span class="meld-pill-tile">${tileHTML(t)}</span><span class="meld-pill-text">×4</span><span class="meld-pill-action">杠</span>`;
-    div.onclick=(e)=>{ e.stopPropagation(); gangNaturalTile(t); };
+      ? `<span class="meld-pill-tile meld-status-tile status-bao">${tileHTML(tile)}</span><span class="meld-pill-text">×${g.count}</span>`
+      : `<span class="meld-pill-tile meld-status-tile status-gang">${tileHTML(tile)}</span><span class="meld-pill-text">×4${g.count>1?' · '+g.count+'组':''}</span>`;
     box.appendChild(div);
   });
 }
@@ -4512,11 +5062,6 @@ function canMeldNeed(c, melds, need){
   if(remainingCount(c)===0) return melds.length===need;
   let t = order.find(x=>c[x]>0);
 
-  if(c[t]===4 && isNaturalGangTile(t)){
-    c[t]-=4; melds.push({type:'gang', tiles:[t,t,t,t]});
-    if(canMeldNeed(c,melds,need)) return true;
-    melds.pop(); c[t]+=4;
-  }
   if(c[t]>=3){
     c[t]-=3; melds.push([t,t,t]);
     if(canMeldNeed(c,melds,need)) return true;
@@ -4542,8 +5087,9 @@ function normalWinWithOpen(c){
   for(const pair of order){
     if(c[pair]>=2){
       const cc=cloneCounts(c); cc[pair]-=2;
+      if(remainingCount(cc)!==need*3) continue;
       const melds=[];
-      if(canMeldNeed(cc, melds, need)) return {ok:true,pair:[pair,pair],melds};
+      if(canMeldNeed(cc, melds, need) && melds.length===need) return {ok:true,pair:[pair,pair],melds};
     }
   }
   return {ok:false};
@@ -4688,6 +5234,57 @@ function handleHandTileClick(i){
 }
 
 
+
+function makePlayableHandTileNode(t, i, small=false, markedDrawRef={value:false}){
+  const d=document.createElement('div');
+  const isDrawn = latestDrawTile && !markedDrawRef.value && t===latestDrawTile;
+  if(isDrawn) markedDrawRef.value=true;
+  d.className=(small?'tile small ':'tile ')+tileClass(t)
+    +(isDrawn ? ' latest-tile' : '')
+    +(isGangCandidateTile(t) ? ' gang-candidate-tile' : '')
+    +(challengeRunning && (challengeActionLocked || challengeDiscardClickLocked || remainingChallengeCooldown()>0) ? ' disabled challenge-locked' : '');
+  d.innerHTML=tileFace(t);
+  d.dataset.index=i;
+  d.onclick=(e)=>{
+    if(e) e.stopPropagation();
+    if(challengeRunning && !tryLockChallengeHandTap(t)){ showChallengeLockedTapFeedback(); return; }
+    handleHandTileClick(i);
+  };
+  return d;
+}
+function renderHandTilesInto(container, small=false){
+  if(!container) return;
+  container.innerHTML='';
+  if(!hand || !hand.length){
+    if(small) container.innerHTML='<span class="floating-empty">还没有手牌</span>';
+    return;
+  }
+  const markedDrawRef={value:false};
+  const groupedTiles=new Set();
+  for(let i=0;i<hand.length;i++){
+    const t=hand[i];
+    if(groupedTiles.has(t) && isGangCandidateTile(t)) continue;
+    if(isGangCandidateTile(t)){
+      const indices=hand.map((x,idx)=>x===t?idx:-1).filter(idx=>idx>=0);
+      groupedTiles.add(t);
+      const group=document.createElement('div');
+      group.className='gang-candidate-group'+(small?' small':'');
+      group.title=`${labelTileText(t)}四张同牌可杠`;
+      indices.forEach(idx=>group.appendChild(makePlayableHandTileNode(hand[idx], idx, small, markedDrawRef)));
+      const gangBtn=document.createElement('button');
+      gangBtn.type='button';
+      gangBtn.className='gang-group-action';
+      gangBtn.textContent='杠';
+      gangBtn.title=`杠 ${labelTileText(t)}`;
+      gangBtn.onclick=(e)=>{ e.stopPropagation(); handleGangPromptClick(t); };
+      group.appendChild(gangBtn);
+      container.appendChild(group);
+    }else{
+      container.appendChild(makePlayableHandTileNode(t, i, small, markedDrawRef));
+    }
+  }
+}
+
 function syncFloatingBoard(){
   try {
   const board=document.getElementById('floatingBoardConsole');
@@ -4705,25 +5302,7 @@ function syncFloatingBoard(){
   if(fb) fb.textContent='宝点 ' + getBaoCount(hand||[]);
 
   if(fh){
-    fh.innerHTML='';
-    if(!hand || !hand.length){
-      fh.innerHTML='<span class="floating-empty">还没有手牌</span>';
-    }else{
-      let markedDraw=false;
-      hand.forEach((t,i)=>{
-        const d=document.createElement('div');
-        const isDrawn = latestDrawTile && !markedDraw && t===latestDrawTile;
-        if(isDrawn) markedDraw=true;
-        d.className='tile small '+tileClass(t)+(isDrawn ? (latestDrawKind==='gang' ? ' gang' : ' drawn') : '')+(challengeRunning && (challengeActionLocked || challengeDiscardClickLocked || remainingChallengeCooldown()>0) ? ' disabled challenge-locked' : '');
-        d.innerHTML=tileFace(t);
-        d.onclick=(e)=>{
-          if(e) e.stopPropagation();
-          if(challengeRunning && !tryLockChallengeHandTap(t)){ showChallengeLockedTapFeedback(); return; }
-          handleHandTileClick(i);
-        };
-        fh.appendChild(d);
-      });
-    }
+    renderHandTilesInto(fh, true);
   }
 
   renderGangHandPrompt();
@@ -4790,22 +5369,8 @@ window.addEventListener('resize', syncBoardConsoleSpace);
 window.addEventListener('orientationchange', ()=>setTimeout(syncBoardConsoleSpace,120));
 
 function renderHand(){
-  const el=document.getElementById('hand'); el.innerHTML='';
-  let markedDraw=false;
-  hand.forEach((t,i)=>{
-    const d=document.createElement('div');
-    const isDrawn = latestDrawTile && !markedDraw && t===latestDrawTile;
-    if(isDrawn) markedDraw=true;
-    d.className='tile '+tileClass(t)+(isDrawn ? (latestDrawKind==='gang' ? ' gang' : ' drawn') : '')+(isGangCandidateTile(t) ? ' gang-candidate-tile' : '')+(challengeRunning && (challengeActionLocked || challengeDiscardClickLocked || remainingChallengeCooldown()>0) ? ' disabled challenge-locked' : '');
-    d.innerHTML=tileFace(t);
-    d.dataset.index=i;
-    d.onclick=(e)=>{ 
-      e.stopPropagation();
-      if(challengeRunning && !tryLockChallengeHandTap(t)){ showChallengeLockedTapFeedback(); return; }
-      handleHandTileClick(i);
-    };
-    el.appendChild(d);
-  });
+  const el=document.getElementById('hand');
+  renderHandTilesInto(el, false);
   const cntEl=document.getElementById('cnt');
   if(cntEl){
     cntEl.textContent=effectiveCountText(hand);
@@ -5466,8 +6031,8 @@ function openMeldSnapshotHtml(){
   if(!opens.length) return '';
   const rows = groupedOpenMelds().map(g=>{
     const tile = g.tile || '';
-    if(g.type==='baoGang') return `<div class="practice-open-meld bao-opened"><span>宝杠</span><span class="bao-marked-tile">${tileHTML(tile)}<i>宝</i></span><b>×${g.count}</b><em>不计入14张</em></div>`;
-    return `<div class="practice-open-meld"><span>已杠</span>${tileHTML(tile)}<b>×4${g.count>1?' · '+g.count+'组':''}</b><em>算${g.count*3}张</em></div>`;
+    if(g.type==='baoGang') return `<div class="practice-open-meld bao-opened"><span class="meld-status-tile status-bao">${tileHTML(tile)}</span><b>×${g.count}</b><em>不计入14张</em></div>`;
+    return `<div class="practice-open-meld"><span class="meld-status-tile status-gang">${tileHTML(tile)}</span><b>×4${g.count>1?' · '+g.count+'组':''}</b><em>算${g.count*3}张</em></div>`;
   }).join('');
   const eff = openMeldEffectiveCount();
   const title = eff ? `非手牌区 <b>${nonHandGroupCount()}次，${groupedOpenMelds().length}类，结构计${eff}张</b>` : `非手牌区 <b>${nonHandGroupCount()}次，${groupedOpenMelds().length}类，不计入14张</b>`;
@@ -5967,26 +6532,29 @@ function countsFromHand(arr){
   return c;
 }
 function isSevenPairs(c){
+  // v182：七小对里，四张相同牌按两对处理；避免把“豪华七对/龙七对”误判成普通胡或不胡。
   let pairs=0;
   for(const t of order){
-    if(c[t]===2) pairs++;
+    if(c[t]===2) pairs+=1;
+    else if(c[t]===4) pairs+=2;
     else if(c[t]===0) {}
     else return false;
   }
   return pairs===7;
+}
+function sevenPairsGroups(c){
+  const pairs=[];
+  for(const t of order){
+    if(c[t]===2) pairs.push([t,t]);
+    else if(c[t]===4){ pairs.push([t,t]); pairs.push([t,t]); }
+  }
+  return pairs;
 }
 function cloneCounts(c){ return Object.assign({},c); }
 function remainingCount(c){ return order.reduce((s,t)=>s+c[t],0); }
 function canMeld(c, melds){
   if(remainingCount(c)===0) return true;
   let t = order.find(x=>c[x]>0);
-
-  // v147：四张相同的非宝牌可按“杠组”参与拆解；宝牌不走普通杠组。
-  if(c[t]===4 && isNaturalGangTile(t)){
-    c[t]-=4; melds.push({type:'gang', tiles:[t,t,t,t]});
-    if(canMeld(c,melds)) return true;
-    melds.pop(); c[t]+=4;
-  }
 
   // try triplet
   if(c[t]>=3){
@@ -6013,8 +6581,10 @@ function normalWin(c){
   for(const pair of order){
     if(c[pair]>=2){
       const cc=cloneCounts(c); cc[pair]-=2;
+      // 普通胡必须是 4 组 3 张面子 + 1 对将；手牌里的四张同牌不能在这里当“杠组”直接消耗4张。
+      if(remainingCount(cc)!==12) continue;
       const melds=[];
-      if(canMeld(cc, melds)) return {ok:true,pair:[pair,pair],melds};
+      if(canMeld(cc, melds) && melds.length===4) return {ok:true,pair:[pair,pair],melds};
     }
   }
   return {ok:false};
@@ -6054,22 +6624,48 @@ function meldHTML(group){
   return `<div class="meld ${isGangGroup(group)?'gang-meld':''}">${badge}${tiles.map(tileHTML).join('')}</div>`;
 }
 
-function winDetailHTML(arr){
-  const c=countsFromHand(arr);
-  if(!c) return '';
+function normalStructureText(opened, melds){
+  const openCnt = opened.length;
+  const handMeldCnt = melds.length;
+  if(openCnt) return `结构：副露${openCnt}组 + 手牌${handMeldCnt}组面子 + 1对将`;
+  return '结构：4组面子 + 1对将';
+}
+function buildWinOptionsFromCounts(c){
+  const options=[];
   if(!openMeldCount() && isSevenPairs(c)){
-    const pairs=[]; for(const t of order) if(c[t]===2) pairs.push([t,t]);
-    return `胡牌：七小对<br>结构：7组对子<div class="melds">${pairs.map(meldHTML).join('')}</div>`;
+    const pairs=sevenPairsGroups(c);
+    options.push({
+      title:'胡牌：七小对',
+      structure:'结构：7组对子（四张相同牌按两对）',
+      groups:pairs
+    });
   }
   const nw=openMeldCount()?normalWinWithOpen(c):normalWin(c);
   if(nw.ok){
     const opened = effectiveOpenMelds().flatMap(m=>[{type:'gang', tiles:m.tiles||[m.tile,m.tile,m.tile,m.tile]}]);
     const all=[...opened,...nw.melds,nw.pair];
-    const gangCnt=all.filter(isGangGroup).length;
-    const structure = gangCnt ? `结构：含${gangCnt}组杠 + 其余面子 + 1对将` : '结构：4组面子 + 1对将';
-    return `胡牌：普通胡<br>${structure}<div class="melds">${all.map(meldHTML).join('')}</div>`;
+    options.push({
+      title:'胡牌：普通胡',
+      structure:normalStructureText(opened, nw.melds),
+      groups:all
+    });
   }
-  return '';
+  return options;
+}
+function winOptionBlock(opt){
+  return `<div class="win-option-block">
+    <div class="win-option-title">${opt.title}</div>
+    <div class="win-option-structure">${opt.structure}</div>
+    <div class="melds">${opt.groups.map(meldHTML).join('')}</div>
+  </div>`;
+}
+function winDetailHTML(arr){
+  const c=countsFromHand(arr);
+  if(!c) return '';
+  const opts=buildWinOptionsFromCounts(c);
+  if(!opts.length) return '';
+  if(opts.length===1) return `${opts[0].title}<br>${opts[0].structure}<div class="melds">${opts[0].groups.map(meldHTML).join('')}</div>`;
+  return `胡牌：多种胡法<br><div class="note">这手牌不止一种拆法，下面列出可行胡法。</div>${opts.map(winOptionBlock).join('')}`;
 }
 
 function setWinResult(summaryHtml, detailHtml, type='ok'){
@@ -6104,19 +6700,19 @@ function checkWin(){
     openAdviceModal(`<div class="advice-empty">${baoMsg}</div>`, 'bad');
     return;
   }
-  if(isSevenPairs(c)){
-    const pairs=[]; for(const t of order) if(c[t]===2) pairs.push([t,t]);
-    setWinResult(`<strong>胡牌：七小对</strong><br>7组对子，当前手牌已能胡。`, compactWinDetail('胡牌：七小对','7组对子', pairs.map(meldHTML).join('')), 'ok'); return;
+  const opts=buildWinOptionsFromCounts(c);
+  if(opts.length){
+    if(opts.length===1){
+      const opt=opts[0];
+      const shortTitle=opt.title.replace('胡牌：','');
+      setWinResult(`<strong>${opt.title}</strong><br>${opt.structure.replace('结构：','')}，当前手牌已能胡。`, compactWinDetail(opt.title,opt.structure,opt.groups.map(meldHTML).join('')), 'ok');
+      return;
+    }
+    const details = opts.map(opt=>compactWinDetail(opt.title,opt.structure,opt.groups.map(meldHTML).join(''))).join('');
+    setWinResult(`<strong>胡牌：多种胡法</strong><br>这手牌不止一种拆法，可按七小对或普通胡理解。`, details, 'ok');
+    return;
   }
-  const nw=openMeldCount()?normalWinWithOpen(c):normalWin(c);
-  if(nw.ok){
-    const opened = effectiveOpenMelds().flatMap(m=>[{type:'gang', tiles:m.tiles||[m.tile,m.tile,m.tile,m.tile]}]);
-    const all=[...opened,...nw.melds,nw.pair];
-    const gangCnt=all.filter(isGangGroup).length;
-    const structure = gangCnt ? `含${gangCnt}组杠 + 其余面子 + 1对将` : '4组面子 + 1对将';
-    setWinResult(`<strong>胡牌：普通胡</strong><br>结构：${structure}。`, compactWinDetail('胡牌：普通胡', structure, all.map(meldHTML).join('')), 'ok'); return;
-  }
-  setResult('<strong>不胡</strong><br>这14张牌不能组成七小对，也不能拆成可胡结构；四张相同非宝牌会按杠组尝试拆解。','bad');
+  setResult('<strong>不胡</strong><br>这14张牌不能组成七小对，也不能拆成完整的普通胡结构。若有四张相同非宝牌，可以先点“杠”补牌后再判断。','bad');
 }
 
 function isWinningHand(arr){
@@ -7214,9 +7810,9 @@ function closeMomFeedbackModal(){
 
 <!-- v132: advice button always returns a modal result, never inline-only feedback -->
 
-<!-- v177: move bao marker onto tile face in non-hand area -->
+<!-- v189: remove hand draw/gang labels at render level -->
 
-<!-- v177: remove standalone bao label from meld chip -->
+<!-- v189: remove non-hand bao/gang text side badges -->
 
 <!-- v135: records modal preserves challenge-success return context -->
 
@@ -7303,4 +7899,28 @@ function closeMomFeedbackModal(){
 <!-- v176: 四张同牌可杠时，手牌区高亮四张牌并显示快捷杠提示 -->
 
 <!-- v177: 非手牌区宝牌杠用牌面右上角小“宝”标记，不再占用独立标签位置 -->
+
+<!-- v178: 修复固定顶部手牌区未加 gang-candidate-tile 类，四张同牌可杠时手牌也会高亮并显示“杠”角标 -->
+
+<!-- v179: 可杠“杠”角标移动到牌面上方居中，手牌框增加上边距并允许溢出显示 -->
+
+<!-- v180: 四张同牌可杠时整体框选，框上方只显示一个“杠”，避免每张牌重复标记和遮挡 -->
+
+<!-- v181: 可杠牌仍整体框选，但“杠”改成牌组右侧可点击按钮，避免遮挡和裁切 -->
+
+<!-- v182: 修复胡牌拆解：四张相同牌可按七小对两对；普通胡必须完整拆成面子，不再用“其余面子”占位 -->
+
+<!-- v183: 手牌可杠只在手牌区体现：四张牌橙色强框 + 右侧杠按钮；未杠前不进入非手牌区 -->
+
+<!-- v184: 修复可杠牌组橙色边框贴边被裁切：手牌容器增加内边距，牌组边框收进容器内部 -->
+
+<!-- v185: 非手牌区普通杠去掉“已杠”大标签，改成牌面右上角小“杠”；宝牌角标收进牌面避免遮挡 -->
+
+<!-- v186: 手牌四张同牌无论13/14都显示可杠框和按钮；非手牌区宝/杠角标统一缩小并放到牌面右下角 -->
+
+<!-- v187: 非手牌区普通杠/宝牌杠牌面强制同尺寸；宝/杠改成牌旁小侧标，不再遮挡牌面 -->
+
+<!-- v188: 手牌区最新摸到的牌统一橙色高亮，不再显示“摸”或“杠”角标，避免误以为需要区分来源 -->
+
+<!-- v189: 渲染层不再给手牌最新牌添加 drawn/gang 来源类，而是统一 latest-tile；非手牌区也去掉宝/杠文字侧标，只用色彩区分 -->
 </html>
