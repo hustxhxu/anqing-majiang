@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
-<title>安庆麻将练牌器 v192</title>
+<title>安庆麻将练牌器 v197</title>
 <style>
   :root{
     --bg:#f5f7fb;--card:#fff;--text:#111827;--muted:#6b7280;--blue:#2563eb;--blue2:#dbeafe;
@@ -4536,6 +4536,565 @@
     }
   }
 
+
+  /* v193：新手引导与横屏提示，降低第一次打开的理解门槛 */
+  .mom-landscape-banner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin:10px 0 14px;
+    padding:11px 12px;
+    border-radius:16px;
+    background:linear-gradient(90deg,#fff7ed 0%,#eff6ff 100%);
+    border:2px solid #fdba74;
+    color:#9a3412;
+    box-shadow:0 6px 16px rgba(249,115,22,.10);
+  }
+  .mom-landscape-banner b{
+    display:block;
+    font-size:16px;
+    font-weight:900;
+  }
+  .mom-landscape-banner span{
+    display:block;
+    margin-top:2px;
+    font-size:13px;
+    color:#475569;
+    font-weight:900;
+  }
+  .mom-landscape-banner button{
+    flex:0 0 auto;
+    width:30px;
+    height:30px;
+    border-radius:999px;
+    border:0;
+    background:#fff;
+    color:#9a3412;
+    font-size:18px;
+    font-weight:900;
+    box-shadow:0 2px 8px rgba(15,23,42,.08);
+  }
+  .mom-small-actions{
+    grid-template-columns:repeat(4,1fr)!important;
+  }
+  .mom-guide-card{
+    border:2px solid #bfdbfe;
+    box-shadow:0 20px 48px rgba(30,64,175,.22);
+  }
+  .mom-guide-title{
+    font-size:24px!important;
+    color:#1e3a8a!important;
+  }
+  .mom-guide-subtitle{
+    margin-top:2px;
+    color:#64748b;
+    font-size:14px;
+    font-weight:900;
+  }
+  .mom-guide-steps{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-top:10px;
+  }
+  .mom-guide-step{
+    display:grid;
+    grid-template-columns:36px 1fr;
+    gap:10px;
+    align-items:center;
+    padding:12px;
+    border-radius:16px;
+    background:#eff6ff;
+    border:1px solid #bfdbfe;
+    color:#1e3a8a;
+    font-size:17px;
+    font-weight:900;
+  }
+  .mom-guide-step b{
+    width:34px;
+    height:34px;
+    border-radius:999px;
+    background:#2563eb;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+  }
+  .mom-guide-step strong{
+    color:#1d4ed8;
+  }
+  .mom-guide-note{
+    margin-top:10px;
+    padding:10px 12px;
+    border-radius:14px;
+    background:#fff7ed;
+    border:1px solid #fed7aa;
+    color:#9a3412;
+    font-size:14px;
+    font-weight:900;
+    line-height:1.5;
+  }
+  .mom-guide-never{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-top:10px;
+    color:#64748b;
+    font-size:13px;
+    font-weight:900;
+  }
+  .mom-guide-never input{
+    width:18px;
+    height:18px;
+  }
+  .mom-guide-actions{
+    grid-template-columns:1fr 1.3fr!important;
+    gap:10px!important;
+  }
+
+  /* v193：底部手牌上方固定给出“下一步做什么” */
+  .floating-next-action{
+    order:6.5!important;
+    display:none;
+    padding:7px 10px;
+    border-radius:13px;
+    background:#eff6ff;
+    border:1px solid #bfdbfe;
+    color:#1d4ed8;
+    font-size:13px;
+    font-weight:900;
+    line-height:1.35;
+    text-align:center;
+  }
+  .floating-next-action.bao{
+    background:#fff7ed;
+    border-color:#fdba74;
+    color:#9a3412;
+  }
+  .floating-next-action.gang{
+    background:#ecfdf5;
+    border-color:#86efac;
+    color:#166534;
+  }
+  .floating-next-action.wait{
+    background:#f8fafc;
+    border-color:#e2e8f0;
+    color:#64748b;
+  }
+  @media(max-width:520px){
+    .mom-small-actions{
+      grid-template-columns:1fr 1fr!important;
+      gap:7px!important;
+    }
+    .mom-landscape-banner{
+      padding:10px;
+      margin:9px 0 12px;
+    }
+    .mom-landscape-banner b{font-size:15px}
+    .mom-landscape-banner span{font-size:12px}
+    .mom-guide-step{
+      font-size:16px;
+      padding:11px;
+    }
+    .floating-next-action{
+      font-size:12px;
+      padding:6px 8px;
+    }
+  }
+
+
+  /* v194：动作式新手引导——不靠读字，靠闪烁目标一步一步点 */
+  .mom-help-btn{
+    background:#f97316!important;
+    color:#fff!important;
+    border-color:#fb923c!important;
+    box-shadow:0 0 0 3px rgba(249,115,22,.16),0 8px 20px rgba(249,115,22,.22)!important;
+    animation:momHelpPulse 1.25s infinite;
+  }
+  .mom-guide-start-pulse{
+    animation:momHelpPulse 1.1s infinite;
+    box-shadow:0 0 0 4px rgba(37,99,235,.18)!important;
+  }
+  @keyframes momHelpPulse{0%,100%{transform:scale(1);filter:brightness(1)}50%{transform:scale(1.035);filter:brightness(1.08)}}
+  .mom-action-demo{display:grid;grid-template-columns:54px 1fr;gap:12px;align-items:center;padding:14px;border-radius:18px;background:#eff6ff;border:2px solid #bfdbfe;color:#1e3a8a;}
+  .mom-action-icon{width:50px;height:50px;border-radius:999px;display:flex;align-items:center;justify-content:center;background:#2563eb;color:#fff;font-size:28px;box-shadow:0 8px 18px rgba(37,99,235,.25);animation:momFinger 1.15s infinite;}
+  @keyframes momFinger{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+  .mom-action-demo b{display:block;font-size:20px;font-weight:900;}
+  .mom-action-demo span{display:block;margin-top:4px;color:#475569;font-size:14px;font-weight:900;}
+  .floating-next-action{font-size:17px!important;padding:10px 12px!important;border-width:2px!important;box-shadow:0 6px 16px rgba(37,99,235,.10)!important;}
+  .mom-step-coach{order:6.4!important;padding:12px 14px;border-radius:16px;background:#fff7ed;border:2px solid #fb923c;color:#9a3412;text-align:center;box-shadow:0 8px 24px rgba(249,115,22,.18);animation:momCoachPulse 1.05s infinite;}
+  .mom-step-coach b{display:block;font-size:14px;line-height:1.1;}
+  .mom-step-coach span{display:block;margin-top:3px;font-size:20px;line-height:1.2;font-weight:900;}
+  .mom-step-coach.bao{background:#fff7ed;border-color:#f97316;color:#9a3412;}
+  .mom-step-coach.discard{background:#eff6ff;border-color:#60a5fa;color:#1e40af;}
+  @keyframes momCoachPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.015)}}
+  body.mom-guided-lock .floating-board-console button,
+  body.mom-guided-lock .floating-board-console details,
+  body.mom-guided-lock .floating-board-console summary,
+  body.mom-guided-lock .floating-board-console .tile{pointer-events:none!important;opacity:.45!important;filter:grayscale(.15)!important;}
+  body.mom-guided-lock .floating-board-console .mom-guide-target{pointer-events:auto!important;opacity:1!important;filter:none!important;}
+  .tile.mom-guide-target{outline:5px solid #f97316!important;box-shadow:0 0 0 6px rgba(249,115,22,.22),0 0 26px rgba(249,115,22,.70)!important;z-index:20!important;animation:momTileFlash .72s infinite!important;position:relative!important;}
+  @keyframes momTileFlash{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-6px) scale(1.10)}}
+  body.mom-guided-lock .floating-board-console .mom-step-coach,
+  body.mom-guided-lock .floating-board-console .floating-hand{opacity:1!important;filter:none!important;}
+  .mom-gang-effect{position:fixed;left:50%;top:45%;transform:translate(-50%,-50%);z-index:9999;padding:18px 28px;border-radius:999px;background:#f97316;color:#fff;font-size:36px;font-weight:900;box-shadow:0 18px 48px rgba(249,115,22,.35);animation:momGangPop .9s ease-out forwards;pointer-events:none;}
+  @keyframes momGangPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.65)}18%{opacity:1;transform:translate(-50%,-50%) scale(1.12)}100%{opacity:0;transform:translate(-50%,-86%) scale(1)}}
+  @media(max-width:520px){.floating-next-action{font-size:16px!important;padding:9px 10px!important}.mom-step-coach span{font-size:18px}.mom-action-demo b{font-size:18px}}
+
+
+  /* v195：挑战成功页突出用时，减少大块绿底，非手牌区更轻 */
+  .success-main-title{
+    display:block!important;
+    font-size:19px!important;
+    margin-bottom:8px!important;
+    color:#166534!important;
+  }
+  .success-time-hero{
+    margin:8px 0 10px!important;
+    padding:14px 16px!important;
+    border-radius:18px!important;
+    background:linear-gradient(135deg,#16a34a 0%,#22c55e 100%)!important;
+    color:#fff!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:space-between!important;
+    box-shadow:0 10px 24px rgba(22,163,74,.24)!important;
+  }
+  .success-time-label{
+    font-size:15px!important;
+    font-weight:900!important;
+    opacity:.95!important;
+  }
+  .success-time-value{
+    font-size:34px!important;
+    line-height:1!important;
+    font-weight:1000!important;
+    letter-spacing:.5px!important;
+  }
+  .success-stat-grid{
+    display:grid!important;
+    grid-template-columns:repeat(3,1fr)!important;
+    gap:6px!important;
+    margin:8px 0 10px!important;
+  }
+  .success-stat-grid div{
+    border:1px solid #e5e7eb!important;
+    background:#f8fafc!important;
+    border-radius:12px!important;
+    padding:7px 6px!important;
+    text-align:center!important;
+    color:#334155!important;
+  }
+  .success-stat-grid b{
+    display:block!important;
+    font-size:15px!important;
+    color:#0f172a!important;
+    font-weight:1000!important;
+  }
+  .success-stat-grid span{
+    display:block!important;
+    margin-top:2px!important;
+    font-size:11px!important;
+    color:#64748b!important;
+    font-weight:900!important;
+  }
+  .result-open-block{
+    background:#fff!important;
+    border:1px dashed #cbd5e1!important;
+    padding:8px!important;
+    border-radius:14px!important;
+    margin-top:8px!important;
+  }
+  .result-open-row{
+    display:flex!important;
+    flex-wrap:wrap!important;
+    gap:6px!important;
+  }
+  .result-meld-compact,
+  .practice-open-meld.result-meld-compact,
+  .practice-open-meld.result-meld-compact.bao-opened{
+    width:auto!important;
+    min-width:0!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    gap:4px!important;
+    padding:4px 6px!important;
+    border-radius:999px!important;
+    background:#fff!important;
+    border:1px solid #e2e8f0!important;
+  }
+  .practice-open-meld.result-meld-compact.bao-opened{
+    border-color:#fed7aa!important;
+    background:#fff7ed!important;
+  }
+  .practice-open-meld.result-meld-compact:not(.bao-opened){
+    border-color:#bbf7d0!important;
+    background:#f7fee7!important;
+  }
+  .practice-open-meld.result-meld-compact em{
+    display:none!important;
+  }
+  .record-win-mark{
+    outline:3px solid #f97316!important;
+    box-shadow:0 0 0 3px rgba(249,115,22,.18)!important;
+    position:relative!important;
+  }
+  .record-win-mark::after{
+    content:'胡';
+    position:absolute;
+    right:-4px;
+    top:-6px;
+    background:#f97316;
+    color:#fff;
+    border-radius:999px;
+    min-width:16px;
+    height:16px;
+    line-height:16px;
+    text-align:center;
+    font-size:10px;
+    font-weight:1000;
+  }
+
+  /* v195：本地战绩压缩显示；胡牌张不单独占一块，只在手牌里高亮 */
+  .record-winning-tile{
+    display:none!important;
+  }
+  .records-modal-card{
+    width:min(500px,100%)!important;
+  }
+  .record-modal-row{
+    grid-template-columns:26px 1fr 52px!important;
+    gap:6px!important;
+    padding:8px!important;
+    align-items:start!important;
+  }
+  .record-rank{
+    width:24px!important;
+    height:24px!important;
+    font-size:13px!important;
+  }
+  .record-title{
+    font-size:13px!important;
+    line-height:1.25!important;
+  }
+  .record-meta{
+    font-size:11px!important;
+    line-height:1.25!important;
+    margin-top:2px!important;
+  }
+  .record-tip{
+    font-size:11px!important;
+    text-align:right!important;
+    color:#64748b!important;
+  }
+  .record-hand-cell{
+    grid-column:1 / -1!important;
+    margin-top:3px!important;
+  }
+  .compact-record-hand .record-hand-block,
+  .record-hand-cell .record-hand-block{
+    margin-top:0!important;
+    padding:6px!important;
+    border-radius:10px!important;
+    background:#fff!important;
+    border:1px dashed #dbeafe!important;
+  }
+  .compact-record-hand .record-hand-title,
+  .record-hand-cell .record-hand-title{
+    font-size:11px!important;
+    margin-bottom:4px!important;
+  }
+  .compact-record-hand .record-hand-row,
+  .record-hand-cell .record-hand-row{
+    display:flex!important;
+    flex-wrap:nowrap!important;
+    overflow-x:auto!important;
+    gap:3px!important;
+    padding-bottom:1px!important;
+  }
+  .compact-record-hand .record-hand-row .tile.small,
+  .record-hand-cell .record-hand-row .tile.small{
+    width:24px!important;
+    min-width:24px!important;
+    height:34px!important;
+  }
+  @media(max-width:520px){
+    .success-time-value{font-size:30px!important}
+    .success-stat-grid{grid-template-columns:repeat(3,1fr)!important}
+    .record-modal-row{grid-template-columns:24px 1fr 44px!important}
+    .record-tip{grid-column:auto!important;text-align:right!important}
+    .compact-record-hand .record-hand-row .tile.small,
+    .record-hand-cell .record-hand-row .tile.small{
+      width:23px!important;
+      min-width:23px!important;
+      height:32px!important;
+    }
+  }
+
+
+  /* v196：新手目标牌闪烁要肉眼可见；不用只靠边框，增加明暗闪和呼吸光 */
+  body.mom-guided-lock .floating-board-console .mom-guide-target{
+    pointer-events:auto!important;
+    opacity:1!important;
+    filter:none!important;
+  }
+  body.mom-guided-lock .floating-board-console .mom-guide-target-group{
+    opacity:1!important;
+    filter:none!important;
+  }
+  .tile.mom-guide-target{
+    outline:5px solid #f97316!important;
+    border-color:#f97316!important;
+    background:#fff7ed!important;
+    color:#7c2d12!important;
+    box-shadow:0 0 0 7px rgba(249,115,22,.30),0 0 34px rgba(249,115,22,.85),0 8px 18px rgba(249,115,22,.26)!important;
+    z-index:80!important;
+    position:relative!important;
+    animation:momTileFlashStrong .78s infinite!important;
+  }
+  .tile.mom-guide-target::before{
+    content:'点我';
+    position:absolute;
+    left:50%;
+    top:-24px;
+    transform:translateX(-50%);
+    z-index:90;
+    padding:2px 8px;
+    border-radius:999px;
+    background:#f97316;
+    color:#fff;
+    font-size:12px;
+    line-height:16px;
+    font-weight:1000;
+    white-space:nowrap;
+    box-shadow:0 5px 14px rgba(249,115,22,.28);
+    pointer-events:none;
+  }
+  @keyframes momTileFlashStrong{
+    0%,100%{
+      transform:translateY(0) scale(1);
+      filter:brightness(1);
+      box-shadow:0 0 0 4px rgba(249,115,22,.20),0 0 18px rgba(249,115,22,.45);
+    }
+    45%{
+      transform:translateY(-5px) scale(1.08);
+      filter:brightness(1.22);
+      box-shadow:0 0 0 9px rgba(249,115,22,.38),0 0 42px rgba(249,115,22,.95);
+    }
+  }
+  .mom-guide-target-group{
+    overflow:visible!important;
+    position:relative!important;
+    box-shadow:0 0 0 3px rgba(249,115,22,.18)!important;
+  }
+
+  /* v196：杠牌特效全局生效、显示更久，但不挡操作 */
+  .mom-gang-effect{
+    pointer-events:none!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    min-width:168px!important;
+    min-height:64px!important;
+    font-size:34px!important;
+    animation:momGangPopLong 1.65s ease-out forwards!important;
+  }
+  @keyframes momGangPopLong{
+    0%{opacity:0;transform:translate(-50%,-50%) scale(.65)}
+    12%{opacity:1;transform:translate(-50%,-50%) scale(1.12)}
+    65%{opacity:1;transform:translate(-50%,-58%) scale(1)}
+    100%{opacity:0;transform:translate(-50%,-84%) scale(.96)}
+  }
+  @media(max-width:520px){
+    .tile.mom-guide-target::before{
+      top:-22px;
+      font-size:11px;
+      line-height:15px;
+      padding:2px 7px;
+    }
+    .mom-gang-effect{
+      min-width:150px!important;
+      font-size:30px!important;
+    }
+  }
+
+
+  /* v197：挑战成功页非手牌区不再使用绿底/宝杠胶囊，改成和手牌一样的普通牌面行 */
+  .plain-open-block,
+  .result-open-block.plain-open-block{
+    background:#fff!important;
+    border:1px dashed #dbeafe!important;
+    border-radius:14px!important;
+    padding:8px!important;
+    margin-top:8px!important;
+  }
+  .plain-open-row,
+  .result-open-row.plain-open-row{
+    display:flex!important;
+    flex-wrap:wrap!important;
+    gap:5px!important;
+    align-items:center!important;
+    background:transparent!important;
+  }
+  .plain-open-row .tile.small{
+    width:28px!important;
+    min-width:28px!important;
+    height:38px!important;
+    margin:0!important;
+  }
+  .result-meld-compact,
+  .practice-open-meld.result-meld-compact,
+  .practice-open-meld.result-meld-compact.bao-opened{
+    background:transparent!important;
+    border:0!important;
+    padding:0!important;
+    box-shadow:none!important;
+  }
+
+  /* v197：胡牌张只高亮，不再盖“胡”字，避免遮挡牌面；本地战绩同样生效 */
+  .record-win-mark{
+    outline:3px solid #f97316!important;
+    border-color:#f97316!important;
+    box-shadow:0 0 0 3px rgba(249,115,22,.16),0 2px 6px rgba(249,115,22,.22)!important;
+    position:relative!important;
+    transform:none!important;
+  }
+  .record-win-mark::after{
+    content:none!important;
+    display:none!important;
+  }
+  .record-win-mark::before{
+    content:'';
+    position:absolute;
+    left:50%;
+    bottom:-5px;
+    transform:translateX(-50%);
+    width:18px;
+    height:4px;
+    border-radius:999px;
+    background:#f97316;
+    box-shadow:0 0 8px rgba(249,115,22,.45);
+    pointer-events:none;
+  }
+  .compact-record-hand .record-hand-row,
+  .record-hand-cell .record-hand-row{
+    padding-bottom:6px!important;
+  }
+  @media(max-width:520px){
+    .plain-open-row .tile.small{
+      width:25px!important;
+      min-width:25px!important;
+      height:35px!important;
+    }
+    .record-win-mark::before{
+      bottom:-4px;
+      width:16px;
+      height:3px;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -4560,16 +5119,21 @@
   <div class="card mom-home-card">
     <div class="mom-badge">简洁版</div>
     <h2 class="mom-title">安庆麻将练牌器</h2>
-    <div class="mom-subtitle">想随便练就点「练习一把」；想计时看成绩就点「计时闯关」。摸到宝牌时，点宝牌就是杠牌。</div>
+    <div class="mom-subtitle">第一次玩先看三步引导；开始后系统会自动摸牌，你只要点下面手牌里想打出去的那张牌。</div>
+    <div id="momLandscapeBanner" class="mom-landscape-banner">
+      <div><b>📱 手机建议横屏玩</b><span>牌更大，看得更清楚，也更容易点准。</span></div>
+      <button type="button" onclick="dismissMomLandscapeBanner()">×</button>
+    </div>
     <div class="mom-main-actions">
-      <button class="mom-primary" onclick="momStartChallenge()"><span class="mom-btn-main">计时闯关</span><span class="mom-btn-sub">自动摸牌，点牌出牌，完成后记战绩</span></button>
-      <button class="mom-secondary" onclick="momStartPractice()"><span class="mom-btn-main">练习一把</span><span class="mom-btn-sub">不计时，先熟悉规则</span></button>
+      <button class="mom-primary" onclick="momStartChallenge()"><span class="mom-btn-main">开始打一局</span><span class="mom-btn-sub">自动摸牌，点下面手牌出牌</span></button>
+      <button class="mom-secondary" onclick="momStartPractice()"><span class="mom-btn-main">随便练练</span><span class="mom-btn-sub">不计时，先熟悉怎么点</span></button>
     </div>
     <div class="mom-mode-explain">
-      <div><b>计时闯关</b>：像正式打一局，系统发牌和摸牌，你只负责出牌，胡牌后保存成绩。</div>
-      <div><b>练习一把</b>：不计时，适合先看看这个工具怎么玩。</div>
+      <div><b>开始打一局</b>：系统自动摸牌，你只负责点下面手牌出牌，胡牌后保存成绩。</div>
+      <div><b>随便练练</b>：不计时，适合先熟悉怎么点牌。</div>
     </div>
     <div class="mom-small-actions">
+      <button class="mom-help-btn" onclick="openMomGuideModal(false)">怎么玩？</button>
       <button onclick="showLocalRecords()">查看战绩</button>
       <button onclick="openMomRuleModal()">规则说明</button>
       <button onclick="openMomFeedbackModal()">规则不对？反馈</button>
@@ -4663,9 +5227,34 @@
     </div>
     <div id="result" class="result neutral merged-result" style="display:none"></div>
   </div>
-  <div class="footer">v192：去掉底部重复计时，顶部计时面板改为绿色状态卡。</div>
+  <div class="footer">v197：挑战成功页非手牌区改为普通牌面展示，胡牌高亮不遮挡。</div>
 </div>
 
+
+<div id="momGuideModal" class="modal-mask mom-modal mom-guide-modal" role="dialog" aria-modal="true" onclick="if(event.target===this) closeMomGuideModal(false)">
+  <div class="modal-card mom-modal-card mom-guide-card">
+    <div class="mom-modal-head">
+      <div>
+        <div class="modal-title mom-guide-title">先学第一步</div>
+        <div class="mom-guide-subtitle">不用看规则，跟着闪烁按钮点。</div>
+      </div>
+      <button class="modal-close-btn" onclick="closeMomGuideModal(false)">×</button>
+    </div>
+    <div class="mom-action-demo">
+      <div class="mom-action-icon">👆</div>
+      <div>
+        <b>第一步：点“开始打一局”</b>
+        <span>点完后，我会只让你点一张闪烁的牌。</span>
+      </div>
+    </div>
+    <div class="mom-guide-note">适合不识字的人：看哪个地方闪，就点哪里。</div>
+    <label class="mom-guide-never"><input type="checkbox" id="momGuideNeverAgain"> 下次不自动弹出</label>
+    <div class="modal-actions mom-guide-actions">
+      <button class="modal-gray" onclick="closeMomGuideModal(false)">先不玩</button>
+      <button class="modal-primary mom-guide-start-pulse" onclick="startFromMomGuide()">开始打一局</button>
+    </div>
+  </div>
+</div>
 
 <div id="momRuleModal" class="modal-mask mom-modal" role="dialog" aria-modal="true" onclick="if(event.target===this) closeMomRuleModal()">
   <div class="modal-card mom-modal-card">
@@ -4705,6 +5294,8 @@
   </div>
   <div id="floatingHand" class="floating-hand compact-floating-hand"></div>
   <div id="floatingGangPrompt" class="hand-gang-prompt floating-gang-prompt" style="display:none"></div>
+  <div id="momStepCoach" class="mom-step-coach" style="display:none"></div>
+  <div id="floatingNextAction" class="floating-next-action">下一步：点下面一张手牌打出去</div>
   <div id="floatingMeldZone" class="floating-meld-zone">
     <div class="floating-meld-head"><span>非手牌区</span><b id="floatingMeldCnt">0组</b></div>
     <div id="floatingMeldsOpen" class="floating-meld-body"><span class="meld-empty">还没有吃碰杠</span></div>
@@ -5475,6 +6066,7 @@ function makePlayableHandTileNode(t, i, small=false, markedDrawRef={value:false}
   d.dataset.index=i;
   d.onclick=(e)=>{
     if(e) e.stopPropagation();
+    if(typeof interceptMomGuidedClick==='function' && interceptMomGuidedClick(i,t)) return;
     if(challengeRunning && !tryLockChallengeHandTap(t)){ showChallengeLockedTapFeedback(); return; }
     handleHandTileClick(i);
   };
@@ -5532,6 +6124,7 @@ function syncFloatingBoard(){
   if(fh){
     renderHandTilesInto(fh, true);
   }
+  if(typeof applyMomGuidedTargetClass==='function') applyMomGuidedTargetClass();
 
   renderGangHandPrompt();
   renderOpenMelds();
@@ -5571,6 +6164,7 @@ function syncFloatingBoard(){
     fstats.style.display='none';
     fstats.textContent='';
   }
+  if(typeof updateFloatingNextAction==='function') updateFloatingNextAction();
 
   const h=Math.ceil(board.getBoundingClientRect().height||0);
   // v191：悬测牌面条改为吸底，页面需要预留底部空间，不再预留顶部空间。
@@ -6230,7 +6824,7 @@ function finishChallenge(winHtml){
     <div class="row" style="margin-top:10px"><button class="primary" onclick="startChallenge()">再来一局</button><button class="gray" onclick="showReviewLog()">查看复盘</button><button class="gray" onclick="showLocalRecords()">查看战绩</button></div>
   </div>`;
   setResult(html,'ok');
-  const successBody = `<strong>自摸胡成功！</strong>${winningDrawHtml()}${currentHandSnapshotHtml('完成手牌')}${openMeldSnapshotHtml()}<br>用时：${fmtTime(rec.time)} ｜ 摸牌：${rec.draws} ｜ 出牌：${rec.discards} ｜ 失误：${rec.mistakes} ｜ 悔牌：${rec.undos} ｜ 杠牌：${rec.gangs||0}`;
+  const successBody = `<strong class="success-main-title">自摸胡成功！</strong>${challengeSuccessStatsHtml(rec)}${currentHandSnapshotHtml('完成手牌')}${openMeldSnapshotHtml()}`;
   lastSuccessBodyHtml = successBody;
   showChallengeSuccessModal(successBody);
 }
@@ -6255,14 +6849,23 @@ function showChallengeSuccessModal(bodyHtml=''){
 function openMeldSnapshotHtml(){
   const opens = Array.isArray(openMelds) ? openMelds : [];
   if(!opens.length) return '';
-  const rows = groupedOpenMelds().map(g=>{
-    const tile = g.tile || '';
-    if(g.type==='baoGang') return `<div class="practice-open-meld bao-opened"><span class="meld-status-tile status-bao">${tileHTML(tile)}</span><span class="meld-mini-meta bao"><b>宝</b><em>×${g.count}</em></span><em>不计入14张</em></div>`;
-    return `<div class="practice-open-meld"><span class="meld-status-tile status-gang">${tileHTML(tile)}</span><span class="meld-mini-meta gang"><b>杠</b><em>×4${g.count>1?' · '+g.count+'组':''}</em></span><em>算${g.count*3}张</em></div>`;
-  }).join('');
+  const tiles=[];
+  opens.forEach(m=>{
+    if(!m) return;
+    if(Array.isArray(m.tiles) && m.tiles.length){
+      m.tiles.forEach(t=>tiles.push(t));
+    }else if(m.tile){
+      const n = m.type==='baoGang' ? 1 : 4;
+      for(let i=0;i<n;i++) tiles.push(m.tile);
+    }
+  });
+  if(!tiles.length) return '';
   const eff = openMeldEffectiveCount();
-  const title = eff ? `非手牌区 <b>${nonHandGroupCount()}次，${groupedOpenMelds().length}类，结构计${eff}张</b>` : `非手牌区 <b>${nonHandGroupCount()}次，${groupedOpenMelds().length}类，不计入14张</b>`;
-  return `<div class="practice-open-block"><div class="record-hand-title">${title}</div>${rows}</div>`;
+  const title = eff ? `非手牌区 <b>${tiles.length}张，结构计${eff}张</b>` : `非手牌区 <b>${tiles.length}张，不计入14张</b>`;
+  return `<div class="record-hand-block result-open-block plain-open-block">
+    <div class="record-hand-title">${title}</div>
+    <div class="record-hand-row plain-open-row">${tiles.map(t=>tileHTMLMarked(t,false)).join('')}</div>
+  </div>`;
 }
 
 function showPracticeWinModal(bodyHtml=''){
@@ -6509,11 +7112,11 @@ function renderLocalRecordsHtml(){
     return `<div class="record-modal-row ${cls}">
       <div class="record-rank">${i+1}</div>
       <div class="record-main">
-        <div class="record-title">${icon} ${result}${reason} · ${timeText(rec.time)}</div>
-        <div class="record-meta">摸${rec.draws}　出${rec.discards}　失误${rec.mistakes}　悔${rec.undos}　杠${rec.gangs}</div>
+        <div class="record-title">${icon} ${result}${reason} · <b>${timeText(rec.time)}</b></div>
+        <div class="record-meta">摸${rec.draws}　出${rec.discards}　误${rec.mistakes}　悔${rec.undos}　杠${rec.gangs}　${rec.usedAdvice ? '用提示' : '无提示'}</div>
       </div>
-      <div class="record-tip">${rec.usedAdvice ? '用过提示' : '无提示'}</div>
-      <div class="record-hand-cell">${rec.winningTile ? `<div class="record-winning-tile">摸到胡牌：${tileHTML(rec.winningTile)} <b>${labelTileText(rec.winningTile)}</b></div>` : ''}${handSnapshotHtml(rec.finalHand, '对应手牌')}</div>
+      <div class="record-tip">${rec.winningTile ? `胡：${labelTileText(rec.winningTile)}` : ''}</div>
+      <div class="record-hand-cell compact-record-hand">${handSnapshotHtml(rec.finalHand, '手牌', rec.winningTile || '')}</div>
     </div>`;
   }).join('');
   return `<div class="record-modal-list">${html}</div>
@@ -6820,24 +7423,45 @@ function tileHTML(t){ return `<span class="tile small ${tileClass(t)}">${tileFac
 function normalizeHandSnapshot(arr){
   return Array.isArray(arr) ? arr.filter(t=>order.includes(t)) : [];
 }
-function handSnapshotHtml(arr, title='本局手牌'){
+function tileHTMLMarked(t, marked=false){ return `<span class="tile small ${tileClass(t)}${marked?' record-win-mark':''}">${tileFace(t)}</span>`; }
+function handSnapshotHtml(arr, title='本局手牌', markTile=''){
   const tiles = normalizeHandSnapshot(arr);
   if(!tiles.length) return `<div class="record-hand-empty">暂无手牌记录</div>`;
+  let marked=false;
+  const row = tiles.map(t=>{
+    const isMark = markTile && !marked && t===markTile;
+    if(isMark) marked=true;
+    return tileHTMLMarked(t, isMark);
+  }).join('');
   return `<div class="record-hand-block">
     <div class="record-hand-title">${title} <b>${tiles.length}/14</b></div>
-    <div class="record-hand-row">${tiles.map(tileHTML).join('')}</div>
+    <div class="record-hand-row">${row}</div>
   </div>`;
 }
 function currentHandSnapshotHtml(title='完成手牌'){
-  return handSnapshotHtml(hand.slice(), title);
+  return handSnapshotHtml(hand.slice(), title, latestDrawTile || '');
 }
 
 function winningDrawHtml(){
+  // v195：挑战结果和战绩里不再单独占一大块“摸到胡牌”，改为在手牌里高亮胡牌张。
   if(!latestDrawTile) return '';
-  return `<div class="winning-draw-line">
-    <span class="winning-draw-label">本次摸到</span>
-    ${tileHTML(latestDrawTile)}
-    <b>${labelTileText(latestDrawTile)}</b>
+  return `<div class="winning-draw-line compact-win-line">
+    <span>胡牌张</span>${tileHTMLMarked(latestDrawTile,true)}<b>${labelTileText(latestDrawTile)}</b>
+  </div>`;
+}
+function challengeSuccessStatsHtml(rec){
+  const assist=rec.advice?'用过提示':'无提示';
+  return `<div class="success-time-hero">
+    <div class="success-time-label">本局用时</div>
+    <div class="success-time-value">${fmtTime(rec.time)}</div>
+  </div>
+  <div class="success-stat-grid">
+    <div><b>${rec.draws}</b><span>摸牌</span></div>
+    <div><b>${rec.discards}</b><span>出牌</span></div>
+    <div><b>${rec.mistakes}</b><span>失误</span></div>
+    <div><b>${rec.undos}</b><span>悔牌</span></div>
+    <div><b>${rec.gangs||0}</b><span>杠牌</span></div>
+    <div><b>${assist}</b><span>提示</span></div>
   </div>`;
 }
 
@@ -7327,6 +7951,7 @@ function gangNaturalTile(tile){
   snapshot('普通杠 '+labelTileText(tile));
   removeAllFromHand(tile,4);
   openMelds.push({type:'gang', tile, tiles:[tile,tile,tile,tile]});
+  showMomGangEffect(tile, '杠一下！');
   // 普通杠属于非手牌区，不属于“已出牌”。杠四张只在牌山剩余计算中占用4张。
   gangChain++;
   if(challengeRunning){ challenge.gangs=(challenge.gangs||0)+1; updateChallengeStats(); }
@@ -7385,6 +8010,7 @@ function gangBaoAt(index){
   snapshot('杠牌 '+labelTileText(bao));
   hand.splice(index,1);
   openMelds.push({type:'baoGang', tile:bao, tiles:[bao], effective:0});
+  showMomGangEffect(bao, '宝牌杠！');
   gangChain++;
   if(challengeRunning){ challenge.gangs=(challenge.gangs||0)+1; updateChallengeStats(); }
   const draw=drawAvailableTile();
@@ -7834,6 +8460,168 @@ function closeMomFeedbackModal(){
   syncAnyModalOpenState();
 }
 
+function openMomGuideModal(auto=true){
+  const m=document.getElementById('momGuideModal');
+  if(!m) return;
+  m.classList.add('show');
+  document.body.classList.add('modal-open');
+  if(auto) m.dataset.auto='1'; else delete m.dataset.auto;
+  syncAnyModalOpenState();
+}
+function closeMomGuideModal(markSeen=true){
+  const m=document.getElementById('momGuideModal');
+  const never=document.getElementById('momGuideNeverAgain');
+  if(markSeen || (never && never.checked)){
+    try{ localStorage.setItem('anqingMomGuideSeenV194','1'); }catch(e){}
+  }
+  if(m) m.classList.remove('show');
+  document.body.classList.remove('modal-open');
+  syncAnyModalOpenState();
+}
+function startFromMomGuide(){
+  closeMomGuideModal(true);
+  momGuidedModeActive=true;
+  momGuidedStep='waitStart';
+  momStartChallenge();
+  setTimeout(()=>beginMomGuidedFirstAction(), 500);
+}
+function showMomGuideIfNeeded(){
+  try{
+    if(localStorage.getItem('anqingMomGuideSeenV194')==='1' || localStorage.getItem('anqingMomGuideSeenV193')==='1') return;
+  }catch(e){}
+  if(document.body.classList.contains('challenge-active')) return;
+  setTimeout(()=>openMomGuideModal(true), 450);
+}
+function dismissMomLandscapeBanner(){
+  const b=document.getElementById('momLandscapeBanner');
+  if(b) b.style.display='none';
+  try{ localStorage.setItem('anqingLandscapeBannerHidden','1'); }catch(e){}
+}
+function restoreMomLandscapeBanner(){
+  try{
+    if(localStorage.getItem('anqingLandscapeBannerHidden')==='1'){
+      const b=document.getElementById('momLandscapeBanner');
+      if(b) b.style.display='none';
+    }
+  }catch(e){}
+}
+function updateFloatingNextAction(){
+  const el=document.getElementById('floatingNextAction');
+  if(!el) return;
+  if(!challengeRunning && !practiceMode){
+    el.style.display='none';
+    return;
+  }
+  el.style.display='block';
+  const target=targetTurnHandSize();
+  const baoNames=baoNamesIn(hand||[]);
+  const gangCands=naturalGangCandidates ? naturalGangCandidates() : [];
+  if(baoNames.length){
+    el.textContent='下一步：摸到宝牌，可点宝牌杠一下';
+    el.className='floating-next-action bao';
+  }else if(gangCands.length){
+    el.textContent='下一步：有四张同牌，可点“杠”或直接点牌出牌';
+    el.className='floating-next-action gang';
+  }else if(effectiveHandSize(hand||[])>=target){
+    el.textContent='下一步：点下面一张手牌打出去';
+    el.className='floating-next-action';
+  }else{
+    el.textContent='等一下：系统正在摸下一张牌';
+    el.className='floating-next-action wait';
+  }
+}
+
+let momGuidedModeActive=false;
+let momGuidedStep='';
+let momGuidedTargetIndex=null;
+let momGuidedTargetKind='discard';
+
+function pickMomGuidedTarget(){
+  if(!Array.isArray(hand) || !hand.length) return null;
+  const baoIdx=hand.findIndex(isBaoTile);
+  if(baoIdx>=0) return {index:baoIdx, kind:'bao'};
+  const latestIdx = latestDrawTile ? hand.findIndex(t=>t===latestDrawTile) : -1;
+  if(latestIdx>=0) return {index:latestIdx, kind:'discard'};
+  return {index:Math.max(0, hand.length-1), kind:'discard'};
+}
+function setMomCoach(text, kind='discard'){
+  const el=document.getElementById('momStepCoach');
+  if(!el) return;
+  el.style.display='block';
+  el.className='mom-step-coach '+kind;
+  el.innerHTML = `<b>跟着闪光点</b><span>${text}</span>`;
+}
+function clearMomGuidedMode(){
+  momGuidedModeActive=false;
+  momGuidedStep='';
+  momGuidedTargetIndex=null;
+  momGuidedTargetKind='discard';
+  document.body.classList.remove('mom-guided-lock');
+  const coach=document.getElementById('momStepCoach');
+  if(coach) coach.style.display='none';
+  document.querySelectorAll('.mom-guide-target').forEach(el=>el.classList.remove('mom-guide-target')); document.querySelectorAll('.mom-guide-target-group').forEach(el=>el.classList.remove('mom-guide-target-group'));
+}
+function beginMomGuidedFirstAction(){
+  if(!challengeRunning || !hand || !hand.length) return;
+  const target=pickMomGuidedTarget();
+  if(!target) return;
+  momGuidedModeActive=true;
+  momGuidedStep='firstAction';
+  momGuidedTargetIndex=target.index;
+  momGuidedTargetKind=target.kind;
+  document.body.classList.add('mom-guided-lock');
+  setMomCoach(target.kind==='bao' ? '点闪烁的宝牌，杠一下' : '点闪烁的牌，打一张试试', target.kind);
+  setTimeout(applyMomGuidedTargetClass, 80);
+}
+function applyMomGuidedTargetClass(){
+  document.querySelectorAll('.mom-guide-target').forEach(el=>el.classList.remove('mom-guide-target'));
+  if(!momGuidedModeActive || momGuidedStep!=='firstAction' || momGuidedTargetIndex==null) return;
+  const targetTile = hand && hand[momGuidedTargetIndex];
+  const nodes=[
+    document.querySelector(`#floatingHand .tile[data-index="${momGuidedTargetIndex}"]`),
+    document.querySelector(`#hand .tile[data-index="${momGuidedTargetIndex}"]`)
+  ].filter(Boolean);
+  // v196：如果因为排序/分组导致 data-index 没命中，退化为按牌面找第一张同牌，确保真的有牌在闪。
+  if(!nodes.length && targetTile){
+    const all=[...document.querySelectorAll('#floatingHand .tile, #hand .tile')];
+    const found=all.find(n=>(n.textContent||'').trim()===tileFace(targetTile));
+    if(found) nodes.push(found);
+  }
+  nodes.forEach(n=>{
+    n.classList.add('mom-guide-target');
+    const parent=n.closest('.gang-candidate-group');
+    if(parent) parent.classList.add('mom-guide-target-group');
+  });
+}
+function showMomGangEffect(tile, text='杠一下！'){
+  const el=document.createElement('div');
+  el.className='mom-gang-effect';
+  el.textContent=text;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(), 1700);
+  showActionToast(`已杠 ${labelTileText(tile)}，继续点牌`, 'ok');
+}
+function interceptMomGuidedClick(i, t){
+  if(!momGuidedModeActive || momGuidedStep!=='firstAction') return false;
+  if(i!==momGuidedTargetIndex){
+    setMomCoach(momGuidedTargetKind==='bao' ? '只能点闪烁的宝牌，先杠一下' : '只能点闪烁的那张牌，打一张试试', momGuidedTargetKind);
+    showActionToast('先点闪烁的那张', 'neutral');
+    return true;
+  }
+  const wasBao=isBaoTile(t);
+  clearMomGuidedMode();
+  if(!wasBao) showActionToast('对，就是这样出牌', 'ok');
+  return false;
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  restoreMomLandscapeBanner();
+  showMomGuideIfNeeded();
+});
+window.addEventListener('load', ()=>{
+  setTimeout(()=>{ restoreMomLandscapeBanner(); showMomGuideIfNeeded(); }, 700);
+});
+
 </script>
 
 
@@ -8036,9 +8824,9 @@ function closeMomFeedbackModal(){
 
 <!-- v132: advice button always returns a modal result, never inline-only feedback -->
 
-<!-- v192: remove duplicate bottom timer in challenge mode -->
+<!-- v197: success non-hand tiles shown like normal hand tiles -->
 
-<!-- v192: style top challenge stats as green live card -->
+<!-- v197: winning tile highlight no longer covers tile face -->
 
 <!-- v135: records modal preserves challenge-success return context -->
 
@@ -8155,4 +8943,14 @@ function closeMomFeedbackModal(){
 <!-- v191: 对局浮动手牌区从吸顶改为吸底，手牌行放到底部，页面预留底部空间避免遮挡 -->
 
 <!-- v192: 挑战计时统计只保留上方计时闯关面板；底部吸底面板隐藏重复统计，上方面板改为绿色状态配色 -->
+
+<!-- v193: 新增妈妈版三步新手引导、首页横屏强提示、吸底手牌上方下一步动作提示 -->
+
+<!-- v194: 新手引导改为动作教学：开始后只允许点击闪烁手牌；宝牌闪烁引导杠一下，并有小特效 -->
+
+<!-- v195: 挑战成功页突出用时；本地战绩不再单独展示摸到胡牌，改为手牌内胡牌张高亮；副露展示更轻量 -->
+
+<!-- v196: 闪烁目标牌增强为点我+强呼吸光；杠牌特效全局生效，显示更久且不阻挡操作 -->
+
+<!-- v197: 挑战成功页非手牌区取消绿底胶囊，改普通牌面行；胡牌张取消覆盖文字，只保留橙色高亮和底部短线 -->
 </html>
