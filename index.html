@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
-<title>安庆麻将练牌器 v191</title>
+<title>安庆麻将练牌器 v192</title>
 <style>
   :root{
     --bg:#f5f7fb;--card:#fff;--text:#111827;--muted:#6b7280;--blue:#2563eb;--blue2:#dbeafe;
@@ -4473,6 +4473,69 @@
     }
   }
 
+
+  /* v192：挑战统计只保留上方计时闯关面板；底部吸底面板不重复计时 */
+  #floatingChallengeStats{
+    display:none!important;
+  }
+  .floating-meta-row{
+    grid-template-columns:1fr!important;
+  }
+
+  /* v192：上方计时闯关面板改成和原底部计时胶囊一致的绿色状态色 */
+  body.challenge-live .challenge-panel,
+  body.challenge-active .challenge-panel{
+    border-color:#bbf7d0!important;
+    background:linear-gradient(180deg,#f0fdf4 0%,#ffffff 100%)!important;
+    box-shadow:0 8px 22px rgba(22,101,52,.10)!important;
+  }
+  body.challenge-live .challenge-panel .section-label,
+  body.challenge-active .challenge-panel .section-label{
+    color:#166534!important;
+  }
+  body.challenge-live .challenge-panel .section-label::before,
+  body.challenge-active .challenge-panel .section-label::before{
+    background:#22c55e!important;
+  }
+  body.challenge-live #challengeState,
+  body.challenge-active #challengeState{
+    background:#ecfdf5!important;
+    border:1px solid #bbf7d0!important;
+    color:#166534!important;
+    border-radius:12px!important;
+    padding:10px 12px!important;
+    font-weight:900!important;
+  }
+  body.challenge-live #challengeStats .stat,
+  body.challenge-active #challengeStats .stat{
+    background:#ecfdf5!important;
+    border-color:#bbf7d0!important;
+    color:#166534!important;
+  }
+  body.challenge-live #challengeStats .stat b,
+  body.challenge-active #challengeStats .stat b{
+    color:#052e16!important;
+  }
+  body.challenge-live #challengeStats .stat span,
+  body.challenge-active #challengeStats .stat span{
+    color:#166534!important;
+  }
+  @media(max-width:520px){
+    body.challenge-live #challengeStats,
+    body.challenge-active #challengeStats{
+      gap:7px!important;
+    }
+    body.challenge-live #challengeStats .stat,
+    body.challenge-active #challengeStats .stat{
+      border-radius:13px!important;
+      padding:8px 4px!important;
+    }
+    body.challenge-live #challengeStats .stat b,
+    body.challenge-active #challengeStats .stat b{
+      font-size:16px!important;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -4600,7 +4663,7 @@
     </div>
     <div id="result" class="result neutral merged-result" style="display:none"></div>
   </div>
-  <div class="footer">v191：对局手牌区改为吸底，手机出牌更顺手。</div>
+  <div class="footer">v192：去掉底部重复计时，顶部计时面板改为绿色状态卡。</div>
 </div>
 
 
@@ -5504,13 +5567,9 @@ function syncFloatingBoard(){
   }
 
   if(fstats){
-    const live = !!challengeRunning;
-    fstats.classList.toggle('live', live);
-    if(live){
-      fstats.textContent = `${fmtTime(challenge.elapsed||0)}｜摸${challenge.draws||0} 出${challenge.discards||0} 误${challenge.mistakes||0} 余${challengeWall.length||0}`;
-    }else{
-      fstats.textContent = '未挑战';
-    }
+    // v192：底部吸底面板不再重复显示计时统计；统计统一保留在上方“计时闯关”面板。
+    fstats.style.display='none';
+    fstats.textContent='';
   }
 
   const h=Math.ceil(board.getBoundingClientRect().height||0);
@@ -7977,9 +8036,9 @@ function closeMomFeedbackModal(){
 
 <!-- v132: advice button always returns a modal result, never inline-only feedback -->
 
-<!-- v191: bottom-sticky hand console for mobile play -->
+<!-- v192: remove duplicate bottom timer in challenge mode -->
 
-<!-- v191: reserve bottom space and keep hand at bottom of floating console -->
+<!-- v192: style top challenge stats as green live card -->
 
 <!-- v135: records modal preserves challenge-success return context -->
 
@@ -8094,4 +8153,6 @@ function closeMomFeedbackModal(){
 <!-- v190: 非手牌区宝杠/普通杠改成牌旁两行小标签：上行宝/杠，下行数量，不遮挡牌面且不额外占高 -->
 
 <!-- v191: 对局浮动手牌区从吸顶改为吸底，手牌行放到底部，页面预留底部空间避免遮挡 -->
+
+<!-- v192: 挑战计时统计只保留上方计时闯关面板；底部吸底面板隐藏重复统计，上方面板改为绿色状态配色 -->
 </html>
